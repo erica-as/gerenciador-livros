@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GerenciadorLivros.API/GerenciadorLivros.API.csproj" />
+    <Project Path="src/GerenciadorLivros.Domain/GerenciadorLivros.Domain.csproj" />
+    <Project Path="src/GerenciadorLivros.Infrastructure/GerenciadorLivros.Infrastructure.csproj" />
+    <Project Path="src/GerenciadorLivros.Service/GerenciadorLivros.Service.csproj" />
+  </Folder>
+</Solution>
