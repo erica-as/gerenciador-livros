@@ -128,3 +128,6 @@ $RECYCLE.BIN/
 logs/
 *.log
 npm-debug.log*
+
+# Node.js
+node_modules/
