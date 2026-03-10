@@ -90,15 +90,15 @@ nCrunchTemp_*
 # Azure Functions localsettings file
 local.settings.json
 
-# User secrets (appsettings.Development.json is usually committed, but not user secrets)
-**/appsettings.*.json
-!**/appsettings.json
-!**/appsettings.Development.json
-
 # Environment variables files
 .env
 .env.local
 .env.*.local
+
+# User secrets - PERMITIR appsettings padrão
+# **/appsettings.*.json
+!**/appsettings.json
+!**/appsettings.Development.json
 
 # Database files
 *.mdf
