@@ -1,0 +1,22 @@
+branch=$(git symbolic-ref --short HEAD)
+
+if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+  exit 0
+fi
+
+valid_pattern="^(feat|fix|hotfix|chore|docs|test|refactor|style|ci|perf|revert|release)/[a-z0-9]+(-[a-z0-9]+)*$"
+
+if ! echo "$branch" | grep -qE "$valid_pattern"; then
+  echo "❌ Nome de branch inválido: '$branch'"
+  echo ""
+  echo "O nome da branch deve seguir o padrão: <tipo>/<descrição-em-kebab-case>"
+  echo ""
+  echo "Tipos aceitos: feat, fix, hotfix, chore, docs, test, refactor, style, ci, perf, revert, release"
+  echo ""
+  echo "Exemplos válidos:"
+  echo "  feat/adicionar-endpoint-livro"
+  echo "  fix/corrigir-validacao-autor"
+  echo "  docs/atualizar-readme"
+  echo "  hotfix/corrigir-bug-critico"
+  exit 1
+fi
