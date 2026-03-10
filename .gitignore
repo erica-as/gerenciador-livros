@@ -95,6 +95,11 @@ local.settings.json
 !**/appsettings.json
 !**/appsettings.Development.json
 
+# Environment variables files
+.env
+.env.local
+.env.*.local
+
 # Database files
 *.mdf
 *.ldf
