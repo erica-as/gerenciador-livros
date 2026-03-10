@@ -1,0 +1,37 @@
+name: Commitlint
+
+on:
+  push:
+    branches:
+      - master
+      - main
+  pull_request:
+    branches:
+      - master
+      - main
+
+jobs:
+  commitlint:
+    name: Validar mensagens de commit
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Validar commits (pull_request)
+        if: github.event_name == 'pull_request'
+        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to HEAD --verbose
+
+      - name: Validar commits (push)
+        if: github.event_name == 'push'
+        run: npx commitlint --from ${{ github.event.before }} --to HEAD --verbose
