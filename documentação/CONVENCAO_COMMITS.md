@@ -1,4 +1,3 @@
-
 ## Convenção de Commits
 
 Este projeto utiliza o [Conventional Commits](https://www.conventionalcommits.org/) para padronizar as mensagens de commit. O padrão é validado automaticamente pelo [commitlint](https://commitlint.js.org/) com o hook do [Husky](https://typicode.github.io/husky/).
