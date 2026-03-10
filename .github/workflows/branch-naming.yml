@@ -1,0 +1,50 @@
+name: Branch Naming
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  branch-naming:
+    name: Validar nome da branch
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Obter nome da branch
+        id: branch
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BRANCH="${{ github.head_ref }}"
+          else
+            BRANCH="${GITHUB_REF#refs/heads/}"
+          fi
+          echo "name=$BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Validar nome da branch
+        run: |
+          BRANCH="${{ steps.branch.outputs.name }}"
+          VALID_PATTERN="^(feat|fix|hotfix|chore|docs|test|refactor|style|ci|perf|revert|release)/[a-z0-9]+(-[a-z0-9]+)*$"
+
+          if [[ "$BRANCH" =~ $VALID_PATTERN ]]; then
+            echo "✅ Nome de branch válido: '$BRANCH'"
+          else
+            echo "❌ Nome de branch inválido: '$BRANCH'"
+            echo ""
+            echo "O nome da branch deve seguir o padrão: <tipo>/<descrição-em-kebab-case>"
+            echo ""
+            echo "Tipos aceitos: feat, fix, hotfix, chore, docs, test, refactor, style, ci, perf, revert, release"
+            echo ""
+            echo "Exemplos válidos:"
+            echo "  feat/adicionar-endpoint-livro"
+            echo "  fix/corrigir-validacao-autor"
+            echo "  docs/atualizar-readme"
+            echo "  hotfix/corrigir-bug-critico"
+            exit 1
+          fi
