@@ -11,6 +11,13 @@ namespace GerenciadorLivros.Infrastructure.Context
 
         public DbSet<Livro> Livros { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Ignorar warning de pending changes em desenvolvimento (Docker)
+            optionsBuilder.ConfigureWarnings(warnings => 
+                warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Livro>(entity =>
