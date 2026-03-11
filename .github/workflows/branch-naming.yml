@@ -3,12 +3,16 @@ name: Branch Naming
 on:
   push:
     branches-ignore:
+      - develop
       - main
       - master
+      - release/*
   pull_request:
     branches:
+      - develop
       - main
       - master
+      - release/*
 
 jobs:
   branch-naming:
@@ -30,6 +34,13 @@ jobs:
       - name: Validar nome da branch
         run: |
           BRANCH="${{ steps.branch.outputs.name }}"
+
+          # Exceções permitidas
+          if [[ "$BRANCH" == "develop" || "$BRANCH" == "main" || "$BRANCH" == "master" || "$BRANCH" =~ ^release/ ]]; then
+            echo "✅ Branch especial permitida: '$BRANCH'"
+            exit 0
+          fi
+
           VALID_PATTERN="^(feat|fix|hotfix|chore|docs|test|refactor|style|ci|perf|revert|release)/[a-z0-9]+(-[a-z0-9]+)*$"
 
           if [[ "$BRANCH" =~ $VALID_PATTERN ]]; then
