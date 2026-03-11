@@ -1,6 +1,6 @@
-# 🔐 Configuração de Variáveis de Ambiente
+# Configuração de Variáveis de Ambiente
 
-## 📋 Para Desenvolvimento Local (Visual Studio)
+## Para Desenvolvimento Local (Visual Studio)
 
 ### Opção 1: Variáveis de Ambiente do Windows
 
@@ -21,7 +21,7 @@ Se você **NÃO** definir as variáveis `DB_USER` e `DB_PASSWORD`, a aplicação
 
 ---
 
-## 🐳 Para Docker
+## Para Docker
 
 1. **Edite o arquivo `.env`** (já criado) com suas credenciais:
    ```env
@@ -43,7 +43,7 @@ Se você **NÃO** definir as variáveis `DB_USER` e `DB_PASSWORD`, a aplicação
 
 ---
 
-## ☁️ Para Produção (Azure/AWS/etc)
+## Para Produção (Azure/AWS/etc)
 
 Configure as variáveis de ambiente no painel da plataforma:
 
@@ -55,16 +55,7 @@ DB_PASSWORD=SuaSenhaSegura@2024
 ASPNETCORE_ENVIRONMENT=Production
 ```
 
----
-
-## ⚠️ IMPORTANTE
-
-- ✅ **SUBA NO GIT:** `.env.example` (template sem senhas)
-- ❌ **NÃO SUBA:** `.env` (contém senhas reais - já está no .gitignore)
-
----
-
-## 🔍 Testando a Connection String
+## Testando a Connection String
 
 Execute para ver qual string está sendo usada:
 ```bash
