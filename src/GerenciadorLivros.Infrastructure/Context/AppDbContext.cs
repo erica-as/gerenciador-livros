@@ -13,7 +13,6 @@ namespace GerenciadorLivros.Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Ignorar warning de pending changes em desenvolvimento (Docker)
             optionsBuilder.ConfigureWarnings(warnings => 
                 warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
         }
