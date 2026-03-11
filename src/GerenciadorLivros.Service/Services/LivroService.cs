@@ -1,6 +1,7 @@
 ﻿using GerenciadorLivros.Domain.Entities;
 using GerenciadorLivros.Domain.Interfaces;
 using GerenciadorLivros.Service.DTOs;
+using GerenciadorLivros.Domain.DTOs.Log;
 using GerenciadorLivros.Service.Interfaces;
 
 namespace GerenciadorLivros.Service.Services
@@ -9,9 +10,12 @@ namespace GerenciadorLivros.Service.Services
     {
         private readonly ILivroRepository _repository;
 
-        public LivroService(ILivroRepository repository)
+        private readonly ILogRepository _logRepository;
+
+        public LivroService(ILivroRepository repository, ILogRepository log)
         {
             _repository = repository;
+            _logRepository = log;
         }
 
         public async Task<IEnumerable<LivroResponseDto>> ObterTodosAsync()
@@ -52,6 +56,15 @@ namespace GerenciadorLivros.Service.Services
             };
 
             await _repository.AdicionarAsync(novoLivro);
+
+            await _logRepository.SalvarLogAsync(new LogAtividadeDto
+            {
+                AcaoCode = "BOOK_CREATED",
+                Mensagem = $"Livro '{dto.Titulo}' criado.",
+                EntidadeId = novoLivro.Id.ToString(),
+                Metadata = new Dictionary<string, object> { ["paginas"] = dto.Paginas }
+            });
+
             return novoLivro.Id;
         }
 

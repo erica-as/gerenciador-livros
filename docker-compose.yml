@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Serviço do Banco de Dados
+  # Serviço do Banco de Dados - SQL
   sql-server:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sql-server-livros
@@ -19,7 +19,26 @@ services:
       retries: 10
       start_period: 20s
 
-  # Serviço da sua API
+  # Serviço do Banco de Dados - NOSQL
+  mongo:
+    image: mongo:6.0
+    container_name: mongo-livros
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    
+
+  # Serviço API
   gerenciador-api:
     image: gerenciador-livros-api
     container_name: api-livros
@@ -28,6 +47,7 @@ services:
       dockerfile: src/GerenciadorLivros.API/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - MONGO_CONNECTION=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/?authSource=admin
       - DB_SERVER=${DB_SERVER}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
@@ -37,6 +57,9 @@ services:
     depends_on:
       sql-server:
         condition: service_healthy
+      mongo:
+        condition: service_healthy
 
 volumes:
   sql_data:
+  mongo_data:

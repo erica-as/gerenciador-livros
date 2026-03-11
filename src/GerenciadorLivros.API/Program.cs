@@ -15,6 +15,8 @@ var dbServer = Environment.GetEnvironmentVariable("DB_SERVER") ?? "(localdb)\\MS
 var dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "LivroDb";
 var dbUser = Environment.GetEnvironmentVariable("DB_USER");
 var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
+var mongoConn = Environment.GetEnvironmentVariable("MONGO_CONNECTION") ?? "mongodb://admin:senha_mongo@localhost:27017";
+
 
 string connectionString;
 if (string.IsNullOrEmpty(dbUser) || string.IsNullOrEmpty(dbPassword))
@@ -26,10 +28,12 @@ else
     connectionString = $"Server={dbServer};Database={dbName};User Id={dbUser};Password={dbPassword};TrustServerCertificate=True";
 }
 
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<ILivroRepository, LivroRepository>();
+builder.Services.AddScoped<ILogRepository, LogRepository>();
 builder.Services.AddScoped<ILivroService, LivroService>();
 
 var app = builder.Build();
