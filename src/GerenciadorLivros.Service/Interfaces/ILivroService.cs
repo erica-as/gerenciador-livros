@@ -5,12 +5,13 @@ namespace GerenciadorLivros.Service.Interfaces
 {
     public interface ILivroService
     {
-        Task<IEnumerable<LivroResponseDto>> ObterTodosAsync();
-        Task<LivroResponseDto?> ObterPorIdAsync(Guid id);
+        Task<IEnumerable<Livro>> ObterTodosAsync();
+        Task<Livro?> ObterPorIdAsync(Guid id);
         Task<Guid> AdicionarAsync(LivroCreateDto livro);
-        Task AtualizarAsync(Livro livro);
+        Task AtualizarAsync(Guid id, LivroUpdateDto dto);
+        Task PatchAsync(Guid id, LivroPatchDto dto);
         Task ExcluirAsync(Guid id);
         Task<bool> MarcarComoLidoAsync(Guid id);
-        Task<IEnumerable<LivroResponseDto>> ObterLivrosLidosAsync();
+        Task<IEnumerable<Livro>> ObterLivrosLidosAsync();
     }
 }

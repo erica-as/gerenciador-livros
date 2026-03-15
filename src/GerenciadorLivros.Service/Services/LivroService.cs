@@ -18,31 +18,15 @@ namespace GerenciadorLivros.Service.Services
             _logRepository = log;
         }
 
-        public async Task<IEnumerable<LivroResponseDto>> ObterTodosAsync()
+        public async Task<IEnumerable<Livro>> ObterTodosAsync()
         {
             var livros = await _repository.ObterTodosAsync();
-            return livros.Select(l => new LivroResponseDto
-            {
-                Id = l.Id,
-                Titulo = l.Titulo,
-                Autor = l.Autor,
-                Lido = l.Lido
-            });
+            return livros;
         }
 
-        public async Task<LivroResponseDto?> ObterPorIdAsync(Guid id)
+        public async Task<Livro?> ObterPorIdAsync(Guid id)
         {
-            var livro = await _repository.ObterPorIdAsync(id);
-            if (livro == null)
-                return null;
-
-            return new LivroResponseDto
-            {
-                Id = livro.Id,
-                Titulo = livro.Titulo,
-                Autor = livro.Autor,
-                Lido = livro.Lido
-            };
+            return await _repository.ObterPorIdAsync(id);
         }
 
         public async Task<Guid> AdicionarAsync(LivroCreateDto dto)
@@ -68,6 +52,20 @@ namespace GerenciadorLivros.Service.Services
             return novoLivro.Id;
         }
 
+        public async Task PatchAsync(Guid id, LivroPatchDto dto)
+        {
+            var livro = await _repository.ObterPorIdAsync(id);
+            if (livro == null) throw new KeyNotFoundException();
+            if (dto.Titulo is not null) livro.Titulo = dto.Titulo;
+            if (dto.Descricao is not null) livro.Descricao = dto.Descricao;
+            if (dto.Autor is not null) livro.Autor = dto.Autor;
+            if (dto.Paginas.HasValue) livro.Paginas = dto.Paginas.Value;
+            if (dto.Lido.HasValue) livro.Lido = dto.Lido.Value;
+            if (dto.LidoInicio.HasValue) livro.LidoInicio = dto.LidoInicio;
+            if (dto.LidoFim.HasValue) livro.LidoFim = dto.LidoFim;
+            await _repository.AtualizarAsync(livro);
+        }
+
         public async Task<bool> MarcarComoLidoAsync(Guid id)
         {
             var livro = await _repository.ObterPorIdAsync(id);
@@ -81,21 +79,27 @@ namespace GerenciadorLivros.Service.Services
             return false;
         }
 
-        public async Task<IEnumerable<LivroResponseDto>> ObterLivrosLidosAsync()
+        public async Task<IEnumerable<Livro>> ObterLivrosLidosAsync()
         {
             var todosLivros = await _repository.ObterTodosAsync();
-            return todosLivros
-                .Where(l => l.Lido)
-                .Select(l => new LivroResponseDto
-                {
-                    Id = l.Id,
-                    Titulo = l.Titulo,
-                    Autor = l.Autor,
-                    Lido = l.Lido
-                });
+            return todosLivros;
         }
 
-        public async Task AtualizarAsync(Livro livro) => await _repository.AtualizarAsync(livro);
+        public async Task AtualizarAsync(Guid id, LivroUpdateDto dto)
+        {
+            var livro = await _repository.ObterPorIdAsync(id);
+            if (livro == null) throw new KeyNotFoundException("Livro não encontrado.");
+
+            livro.Titulo = dto.Titulo;
+            livro.Descricao = dto.Descricao;
+            livro.Autor = dto.Autor;
+            livro.Paginas = dto.Paginas;
+            livro.Lido = dto.Lido;
+            livro.LidoInicio = dto.LidoInicio;
+            livro.LidoFim = dto.LidoFim;
+
+            await _repository.AtualizarAsync(livro);
+        }
 
         public async Task ExcluirAsync(Guid id) => await _repository.ExcluirAsync(id);
     }

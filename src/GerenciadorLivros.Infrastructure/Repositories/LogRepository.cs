@@ -15,7 +15,7 @@ namespace GerenciadorLivros.Infrastructure.Repositories
             var connectionString = config["MONGO_CONNECTION"] ?? config.GetConnectionString("MongoConnection");
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new ArgumentException("MongoDB connection string is not configured. Set MONGO_CONNECTION environment variable or add ConnectionStrings:MongoConnection in configuration.");
+                throw new ArgumentException("A string de conexão do MongoDB não está configurada. Defina a variável de ambiente MONGO_CONNECTION ou adicione ConnectionStrings:MongoConnection na configuração.");
             }
 
             var client = new MongoClient(connectionString);
