@@ -15,6 +15,7 @@
         public Livro()
         {
             Id = Guid.NewGuid();
+            DataCriacao = DateTime.UtcNow;
         }
     }
 }
