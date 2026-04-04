@@ -36,7 +36,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<ILivroRepository, LivroRepository>();
-builder.Services.AddScoped<ILogRepository, LogRepository>();
 builder.Services.AddScoped<ILivroService, LivroService>();
 
 var app = builder.Build();
