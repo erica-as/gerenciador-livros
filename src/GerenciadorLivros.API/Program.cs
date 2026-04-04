@@ -1,9 +1,12 @@
+using GerenciadorLivros.API.Configuration;
 using GerenciadorLivros.Domain.Interfaces;
 using GerenciadorLivros.Infrastructure.Context;
 using GerenciadorLivros.Infrastructure.Repositories;
 using GerenciadorLivros.Service.Interfaces;
 using GerenciadorLivros.Service.Services;
 using Microsoft.EntityFrameworkCore;
+
+MongoSerializationConfig.ConfigureGuidRepresentation();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -67,3 +70,4 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
+
