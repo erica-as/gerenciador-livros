@@ -1,6 +1,7 @@
 branch=$(git symbolic-ref --short HEAD)
 
-if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+# Exceções: branches especiais que não precisam seguir o padrão
+if [ "$branch" = "main" ] || [ "$branch" = "master" ] || [ "$branch" = "develop" ]; then
   exit 0
 fi
 
