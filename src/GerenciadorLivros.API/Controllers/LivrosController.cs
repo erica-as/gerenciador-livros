@@ -1,7 +1,6 @@
 ﻿using GerenciadorLivros.Domain.Entities;
 using GerenciadorLivros.Service.DTOs;
 using GerenciadorLivros.Service.Interfaces;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciadorLivros.API.Controllers;
@@ -73,14 +72,9 @@ public class LivrosController : ControllerBase
     }
 
     [HttpPatch("{id:guid}")]
-    public async Task<ActionResult> Patch(Guid id, [FromBody] JsonPatchDocument<LivroPatchDto> patchDoc)
+    public async Task<ActionResult> Patch(Guid id, [FromBody] LivroPatchDto? dto)
     {
-        if (patchDoc == null) return BadRequest("Patch document is required.");
-
-        var dto = new LivroPatchDto();
-        patchDoc.ApplyTo(dto, ModelState);
-
-        if (!ModelState.IsValid) return BadRequest(ModelState);
+        if (dto == null) return BadRequest("Body da atualização parcial é obrigatório.");
 
         try
         {

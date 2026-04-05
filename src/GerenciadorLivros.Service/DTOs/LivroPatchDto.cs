@@ -1,6 +1,5 @@
 ﻿namespace GerenciadorLivros.Service.DTOs
 {
-    // DTO para atualizações parciais. Todos os campos são opcionais.
     public class LivroPatchDto
     {
         public string? Titulo { get; set; }
