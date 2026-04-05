@@ -41,3 +41,25 @@ npm install
 ```
 
 O hook `commit-msg` será configurado automaticamente pelo Husky e validará cada commit antes de ser registrado.
+
+### Validação no GitHub Actions
+
+O projeto possui dois workflows de validação:
+
+1. **Branch Naming** (`branch-naming.yml`): Valida o nome das branches criadas/mergeadas
+   - Aplica-se a PRs para `develop`, `main`, `master` e `release/*`
+   - Padrão esperado: `<tipo>/<descrição-em-kebab-case>`
+
+2. **Commitlint** (`commitlint.yml`): Valida as mensagens de commit
+   - Aplica-se a PRs e pushes para `master` e `main`
+   - **Merge commits são automaticamente excluídos** da validação
+   - Commits feitos durante o desenvolvimento na branch devem seguir a convenção
+
+### Merge Commits
+
+**Nota importante:** Merge commits (criados automaticamente ao fazer merge de PRs) são **excluídos da validação** de commitlint. Isso permite que você:
+- Valide commits normalmente durante o desenvolvimento
+- Crie PRs sem se preocupar com a validação de merge commits
+- Mergear PRs sem erros de validação
+
+Os únicos commits que precisam estar em conformidade são aqueles feitos durante o desenvolvimento na sua branch de feature/fix.
