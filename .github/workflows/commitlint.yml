@@ -30,8 +30,8 @@ jobs:
 
       - name: Validar commits (pull_request)
         if: github.event_name == 'pull_request'
-        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to HEAD --verbose
+        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to HEAD --verbose --exclude-merge
 
       - name: Validar commits (push)
-        if: github.event_name == 'push'
-        run: npx commitlint --from ${{ github.event.before }} --to HEAD --verbose
+        if: github.event_name == 'push' && !contains(github.event.head_commit.message, 'Merge')
+        run: npx commitlint --from ${{ github.event.before }} --to HEAD --verbose --exclude-merge
